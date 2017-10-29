@@ -47,7 +47,7 @@ echo $mp->text($markdown); // prints HTML, including docmeta block
 
 echo $mp->noMeta($markdown); // prints HTML, without docmeta block
 
-$meta $mp->meta($markdown); // returns an array of docmeta key/value pairs
+$meta = $mp->meta($markdown); // returns an array of docmeta key/value pairs
   
 ```
 
