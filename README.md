@@ -9,7 +9,7 @@ MetaParsedown retains all the functionality of **erusev\parsedown**, but adds tw
 
 If you don't care if the metadata is removed, just use Parsedown's original method:
 
-* **text($text)** -- returns the parsed markdown (including the metadata as part of the HTML)
+* **text($markdown)** -- returns the parsed markdown (including the metadata as part of the HTML)
 
 
 ### Installation
