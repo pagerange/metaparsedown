@@ -2,7 +2,7 @@
 
 MetaParsedown extends **erusev/parsedown**, a very nice markdown parser, by adding the ability to have metadata in markdown files.  I created this because we were creating a markdown document management system and needed a way to add metadata to each file.  The other option was a separate metadata file for each markdown file, which is fine, but seemed cumborsome for those creating the documents.  This way seemed easier and is pretty easy to use.
 
-MetaParsedown retains all the functionality of **erusev\parsedown**, but adds two methods:
+MetaParsedown retains all the functionality of **erusev/parsedown**, but adds two methods:
 
 * **meta($markdown)** -- returns an array of the key/value pair metadata tags in the markdown
 * **noMeta($markdown)** -- returns the parsed mardown with the metadata removed for HTML output
@@ -14,7 +14,7 @@ If you don't care if the metadata is removed, just use Parsedown's original meth
 
 ### Installation
 
-Include `erusev\parsedown` original class `Parsedown.php`, and `MetaParsedown` or install [the composer package](https://packagist.org/packages/pagerange/metaparsedown).
+Include `erusev/parsedown` original class `Parsedown.php`, and `MetaParsedown` or install [the composer package](https://packagist.org/packages/pagerange/metaparsedown).
 
 ### Adding meta data
 
@@ -23,11 +23,9 @@ Add meta data in ini format anywhere in the document.  The ini key/value pairs m
 ```html
   
 <!--docmeta
-
-title = My Great Document
-author = Yours Truly
-date = 2017-10-29
-
+	title = My Great Document
+	author = Yours Truly
+	date = 2017-10-29
 -->
 
 # Markdown title
