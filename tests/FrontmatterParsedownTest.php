@@ -1,8 +1,8 @@
 <?php
 
-use Pagerange\Markdown\FrontmatterParsedown;
+use Pagerange\Markdown\Parsers\FrontmatterParser;
 
-class FrontmatterParsedownTest extends PHPUnit\Framework\TestCase
+class FrontmatterParserTest extends PHPUnit\Framework\TestCase
 {
 
 	// MetaParsedown instance
@@ -10,33 +10,33 @@ class FrontmatterParsedownTest extends PHPUnit\Framework\TestCase
 
 	public function setup()
 	{
-		$this->mp = new FrontmatterParsedown;
+		$this->mp = new FrontmatterParser;
 	}
 
 	public function testCanExtractFrontmatterDataArray()
 	{
-		$file = $this->getGoodFrontmatter();
+		$file = file_get_contents(FIXTURES . '/good_frontmatter.md');
 		$meta = $this->mp->meta($file);
 		$this->assertCount(3, $meta);
 	}
 
 	public function testFrontmatterDataContainsKey()
 	{
-		$file = $this->getGoodFrontmatter();
+		$file = file_get_contents(FIXTURES . '/good_frontmatter.md');
 		$meta = $this->mp->meta($file);
 		$this->assertArrayHasKey('title', $meta);
 	}
 
 	public function testMetaReturnsEmptyArrayOnFileWithNoFrontmatter()
 	{
-		$file = $this->getNoMeta();
+		$file = file_get_contents(FIXTURES . '/no_meta.md');
 		$meta = $this->mp->meta($file);
 		$this->assertEmpty($meta);
 	}
 
 	public function testMetaDataEmptyOnBrokenFrontmatterTag()
 	{
-		$file = $this->getBrokenFrontmatter();
+		$file = file_get_contents(FIXTURES . '/broken_frontmatter.md');
 		$meta = $this->mp->meta($file);
 		$this->assertEmpty($meta);
 	}
@@ -46,94 +46,17 @@ class FrontmatterParsedownTest extends PHPUnit\Framework\TestCase
 	 */
 	public function testMetaThrowsParseExceptionOnBadFrontmatterFormat()
 	{
-		$file = $this->getBadFrontmatter();
+		$file = file_get_contents(FIXTURES . '/bad_frontmatter.md');
 		$meta = $this->mp->meta($file);
 	}
 
 	public function testTextReturnsHtmlSringWithNoLeadingMetadata()
 	{
-		$file = $this->getGoodFrontmatter();
+		$file = file_get_contents(FIXTURES . '/good_frontmatter.md');
 		$html = $this->mp->text($file);
 		$regex = "/^(\<h1\>This is markdown\<\/h1\>)/";
 		preg_match($regex, $html, $matches);
 		$this->assertEquals('<h1>This is markdown</h1>', $matches[1]);
-	}
-
-	
-	public function getNoMeta()
-	{
-		return "# This is markdown
-
-		This is a paragraph.
-
-		* Bullet
-		* Bullet
-		* Bullet
-
-		This is another paragraph
-
-		";
-	}
-
-	public function getGoodFrontmatter()
-	{
-		return "---
-title 	  : This is markdown
-author    : Steve George
-created   : 2017-10-28
----
-# This is markdown
-
-This is a paragraph.
-
-* Bullet
-* Bullet
-* Bullet
-
-This is another paragraph
-
-		";
-	}
-
-	public function getBrokenFrontmatter()
-	{
-		return "--
-title 	  :	Configuring Wordpress
-author    :	Steve George
-created   : 2017-10-28
----
-# This is markdown
-
-This is a paragraph.
-
-* Bullet
-* Bullet
-* Bullet
-
-This is another paragraph
-
-		";
-
-	}
-
-	public function getBadFrontmatter()
-	{
-		return "---
-title 	  :	Configuring: Wordpress
-author    :	Steve George
-created   : 2017-10-28
----
-# This is markdown
-
-This is a paragraph.
-
-* Bullet
-* Bullet
-* Bullet
-
-This is another paragraph
-
-		";
 	}
 
 }

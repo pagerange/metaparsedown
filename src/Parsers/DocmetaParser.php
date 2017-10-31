@@ -1,29 +1,28 @@
 <?php
 
-namespace Pagerange\Markdown;
-
 /**
 * Extends Erusev\Parsedown with ability to have
-* YAML metadata in markdown
+* docmeta meta data in markdown.
 * @author Steve George <steve@pagerange.com>
 * @created 2017-10-29
 * @updated 2017-10-29
 * @license MIT
 */
 
-use \Symfony\Component\Yaml\Yaml;
+namespace Pagerange\Markdown\Parsers;
 
-class FrontmatterParsedown extends \Parsedown implements ParserInterface
+class DocmetaParser extends \Parsedown implements ParserInterface
 {
 
 	/**
 	 * @var String regex for docmeta block
 	 */
-	private $regex = '/^(---(?s)(.*?)---)/i';
+	private $regex = '/(\<\!--docmeta(?s)(.*?)--\>)/i';
 
 	/**
-	 * Returns HTML from Markdown, but with all meta
-	 * information stripped out.
+	 * Strips docmeta metadata from document.
+	 * Passes clean markdown to parent.
+	 * Returns HTML.
 	 * @param String $text Markdown text
 	 * @return String HTML
 	 */
@@ -34,14 +33,16 @@ class FrontmatterParsedown extends \Parsedown implements ParserInterface
 	}
 
 	/**
-	 * Returns an array of meta tags from the document
+	 * Extracts docmeta metadata as string
+	 * Parses extracted string as INI key/value pairs
+	 * Returns array of metadata
 	 * @param String $text Markdown text
 	 * @return array
 	 */
 	public function meta($text) {
 		preg_match($this->regex, $text, $matches);
 		if(isset($matches[2])) {
-			return Yaml::parse(trim($matches[2]));
+			return parse_ini_string($matches[2]);
 		}
 		return array();
 	}

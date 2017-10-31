@@ -2,12 +2,14 @@
 
 use Pagerange\Markdown\MetaParsedown;
 
+define('FIXTURES', __DIR__ . '/fixtures');
+
 class TestMetaParsedown extends PHPUnit\Framework\TestCase
 {
 
 	// MetaParsedown instances
-	private $dm;
-	private $fm;
+	private $dm; // docmeta parser
+	private $fm; // frontmatter parser
 
 	public function setup()
 	{
@@ -17,21 +19,21 @@ class TestMetaParsedown extends PHPUnit\Framework\TestCase
 
 	public function testCanExtractDocmetaDataArray()
 	{
-		$file = $this->getGoodDocmeta();
+		$file = file_get_contents(FIXTURES . '/good_docmeta.md');
 		$meta = $this->dm->meta($file);
 		$this->assertTrue(is_array($meta));
 	}
 
 	public function testCanExtractFrontmatterDataArray()
 	{
-		$file = $this->getGoodFrontmatter();
+		$file = file_get_contents(FIXTURES . '/good_frontmatter.md');
 		$meta = $this->fm->meta($file);
 		$this->assertTrue(is_array($meta));
 	}
 
 	public function testDocmetaTextReturnsHtmlString()
 	{
-		$file = $this->getGoodDocmeta();
+		$file = file_get_contents(FIXTURES . '/good_docmeta.md');
 		$html = $this->dm->text($file);
 		$regex = "/(\<h1\>This is markdown\<\/h1\>)/";
 		preg_match($regex, $html, $matches);
@@ -40,7 +42,7 @@ class TestMetaParsedown extends PHPUnit\Framework\TestCase
 
 	public function testFrontmatterTextReturnsHtmlString()
 	{
-		$file = $this->getGoodFrontmatter();
+		$file = file_get_contents(FIXTURES . '/good_frontmatter.md');
 		$html = $this->fm->text($file);
 		$regex = "/(\<h1\>This is markdown\<\/h1\>)/";
 		preg_match($regex, $html, $matches);
@@ -54,53 +56,5 @@ class TestMetaParsedown extends PHPUnit\Framework\TestCase
 	{
 		new MetaParsedown('asdfasf');
 	}
-
-	public function getGoodDocmeta()
-	{
-		return "<!--docmeta
-title     =   This is markdown
-author    =   Steve George
-created   =   2017-10-28
-updated   = 2017-10-28
-category  =  samples
--->
-# This is markdown
-
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-* Duis aute irure dolor
-* Duis aute irure dolor
-* Duis aute irure dolor
-* Duis aute irure dolor
-* Duis aute irure dolor
-
-		";
-	}
-
-	public function getGoodFrontmatter()
-	{
-		return "---
-title: This is markdown
-author: Steve George
-created: 2017-10-28
----
-# This is markdown
-
-This is a paragraph.
-
-* Bullet
-* Bullet
-* Bullet
-
-This is another paragraph
-
-		";
-	}
-
 
 }

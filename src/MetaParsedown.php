@@ -3,29 +3,37 @@
 namespace Pagerange\Markdown;
 
 /**
-* Extends Erusev\Parsedown with ability to have
-* meta data in markdown.
+* Extends erusev/parsedown with ability to have
+* meta data in markdown.  
+* 
+* This is just a convenience adapter for the 
+* Parser classes.  
+* 
+* If you prefer, you can instantiate the Parser 
+* classes directly and bypass this adapter completely.
+* 
 * @author Steve George <steve@pagerange.com>
 * @created 2017-10-29
 * @updated 2017-10-29
 * @license MIT
 */
 
-class MetaParsedown implements ParserInterface
+class MetaParsedown implements Parsers\ParserInterface
 {
+
+	/**
+	 * @var Array valid parser classes
+	 */
+	private $parsers = array(
+		'docmeta' => 'DocmetaParser',
+		'frontmatter' => 'FrontmatterParser'
+	);
 
 	/**
 	 * @var Pagerange\Markdown\ParserInterface
 	 */
 	private $parser;
 
-	/**
-	 * @var Array valid parser classes
-	 */
-	private $parsers = array(
-		'docmeta' => 'DocmetaParsedown',
-		'frontmatter' => 'FrontmatterParsedown'
-	);
 
 	/**
 	 * Constructor
@@ -35,7 +43,7 @@ class MetaParsedown implements ParserInterface
 	public function __construct($type = 'docmeta') 
 	{
 		if(array_key_exists($type, $this->parsers)) {
-			$class = '\\Pagerange\\Markdown\\' . $this->parsers[$type];
+			$class = '\\Pagerange\\Markdown\\Parsers\\' . $this->parsers[$type];
 			$this->parser = new $class;
 		}  else {
 			throw new ParserNotFoundException('No such parser: ' . $type);
