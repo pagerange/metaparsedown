@@ -2,7 +2,9 @@
 <phpunit bootstrap="vendor/autoload.php">
 	<testsuites>
 		<testsuite name="metaparsedown">
-			<directory>tests</directory>
+			<file>tests/MetaParsedownTest.php</file>
+			<file>tests/DocmetaParsedownTest.php</file>
+			<file>tests/FrontmatterParsedownTest.php</file>
 		</testsuite>
 	</testsuites>
 </phpunit>

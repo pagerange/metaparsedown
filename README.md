@@ -1,16 +1,12 @@
 ## MetaParsedown
 
-MetaParsedown extends **erusev/parsedown**, a very nice markdown parser, by adding the ability to have metadata in markdown files.  I created this because we were creating a markdown document management system and needed a way to add metadata to each file.  The other option was a separate metadata file for each markdown file, which is fine, but seemed cumborsome for those creating the documents.  This way seemed easier and is pretty easy to use.
+MetaParsedown extends **erusev/parsedown**, a very nice markdown parser, by adding the ability to have metadata in markdown files.  I created this because we were creating a markdown document management system and needed a way to add metadata to each file.  The other option was a separate metadata file for each markdown file, which is fine, but seemed cumborsome for those creating the documents.  This way seemed easier and is pretty simple to use.
 
-MetaParsedown retains all the functionality of **erusev/parsedown**, but adds two methods:
+MetaParsedown retains all the functionality of **erusev/parsedown**, but adds one method:
 
-* **meta($markdown)** -- returns an array of the key/value pair metadata tags in the markdown
-* **noMeta($markdown)** -- returns the parsed mardown with the metadata removed for HTML output
+* **meta($markdown)** -- returns an array of the key/value metadata tags in the markdown
 
-If you don't care if the metadata is removed, just use Parsedown's original method:
-
-* **text($markdown)** -- returns the parsed markdown (including the metadata as part of the HTML)
-
+Parsedown's original **text($markdown)** method continues to return HTML, without the metadata tags
 
 ### Installation
 
@@ -18,17 +14,36 @@ Include `erusev/parsedown` original class `Parsedown.php`, and `MetaParsedown` o
 
 ### Adding meta data
 
-Add meta data in ini format anywhere in the document.  The ini key/value pairs must be inside a `docmeta` block (a simple HTML comment block).  This does not break markdown... it's just an HTML comment.  The ini key/value pairs must follow standard ini format.  The `docmeta` comment block can be anywhere in the document... but just once.
+Add metadata in one of two ways.  
+
+One, in what I'm calling a `docmeta` block (a simple HTML comment), anywhere in the file (once), with the meta tags in ini format.  I prefer this myself, because the markdown is valid regardless of the markdown parser used.
 
 ```html
-  
+   
 <!--docmeta
-	title = My Great Document
-	author = Yours Truly
-	date = 2017-10-29
+title = My Great Document
+author = Yours Truly
+date = 2017-10-29
 -->
+# My Great Document
 
-# Markdown title
+This is the rest of the markdown document
+
+* bullet list item
+* bullet list item
+
+```
+
+Two, in standard `frontmatter` format, in valid YAML, with `---` before and after.  Basically the same as Jekyl.  This is parsed by the Symfony Yaml component.  The frontmatter must appear at the head of the document.  
+
+```yaml
+    
+---
+title: My Great Document
+author: Yours Truly
+date: 2017-10-29
+---
+# My Great Document
 
 This is the rest of the markdown document
 
@@ -41,11 +56,15 @@ This is the rest of the markdown document
 
 ``` php
 
-$mp = new MetaParsedown();
+$mp = new MetaParsedown(); // defaults to docmeta format
 
-echo $mp->text($markdown); // prints HTML, including docmeta block
+$mp = new MetaParsedown('frontmatter'); // yaml frontmatter
 
-echo $mp->noMeta($markdown); // prints HTML, without docmeta block
+$mp = new MetaParsedown('docmeta'); // docmeta format
+
+
+
+echo $mp->text($markdown); // prints HTML, without meta data
 
 $meta = $mp->meta($markdown); // returns an array of docmeta key/value pairs
   

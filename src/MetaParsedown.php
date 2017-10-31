@@ -11,38 +11,55 @@ namespace Pagerange\Markdown;
 * @license MIT
 */
 
-class MetaParsedown extends \Parsedown
+class MetaParsedown implements ParserInterface
 {
 
 	/**
-	 * @var String regex for docmeta block
+	 * @var Pagerange\Markdown\ParserInterface
 	 */
-	private $docmetaRegex = '/(<\!--docmeta(?s)(.*?)-->)/i';
-
+	private $parser;
 
 	/**
-	 * Returns HTML from Markdown, but with all docmeta
-	 * information stripped out.
-	 * @param String $text Markdown text
-	 * @return String HTML
+	 * @var Array valid parser classes
 	 */
-	public function noMeta($text)
+	private $parsers = array(
+		'docmeta' => 'DocmetaParsedown',
+		'frontmatter' => 'FrontmatterParsedown'
+	);
+
+	/**
+	 * Constructor
+	 * @param String $type type of parser
+	 * @return void
+	 */
+	public function __construct($type = 'docmeta') 
 	{
-		$markup = $this->text($text);
-		return preg_replace($this->docmetaRegex, '', $markup);
+		if(array_key_exists($type, $this->parsers)) {
+			$class = '\\Pagerange\\Markdown\\' . $this->parsers[$type];
+			$this->parser = new $class;
+		}  else {
+			throw new ParserNotFoundException('No such parser: ' . $type);
+		}
 	}
 
 	/**
-	 * Returns an array of docmeta tags from the document
-	 * @param String $text Markdown text
-	 * @return array or false if not docmeta tags
+	 * Returns an array of the metadata contained in the markdown
+	 * @param String $text  markdown text
+	 * @return Array
 	 */
-	public function meta($text) {
-		preg_match($this->docmetaRegex, $text, $matches);
-		if(isset($matches[2])) {
-			return parse_ini_string($matches[2]);
-		}
-		return array();
+	public function meta($text) 
+	{
+		return $this->parser->meta($text);
+	}
+
+	/**
+	 * Rturns HTML from markdown
+	 * @param String $text markdown text
+	 * @return String HTML
+	 */
+	public function text($text)
+	{
+		return $this->parser->text($text);
 	}
 
 }

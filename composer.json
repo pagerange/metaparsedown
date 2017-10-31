@@ -4,7 +4,8 @@
     "keywords": ["pagerange", "parsedown", "markdown", "meta", "docmeta"],
     "type": "library",
     "require": {
-        "erusev/parsedown": "^1.6"
+        "erusev/parsedown": "^1.6",
+        "symfony/yaml": "^3.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.4"
