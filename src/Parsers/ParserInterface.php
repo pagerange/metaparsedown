@@ -4,7 +4,7 @@
 * Parser Interface for Pagerange\Markdown\MetaParsedown parsers
 * @author Steve George <steve@pagerange.com>
 * @created 2017-10-29
-* @updated 2017-10-29
+* @updated 2017-11-15
 * @license MIT
 */
 
@@ -31,5 +31,12 @@ interface ParserInterface
 	 * @return Array
 	 */
 	public function meta($text);
+
+	/**
+	 * Returns markdown without meta tag block
+	 * @param  String $text markdown including meta tag block
+	 * @return String Markdown without meta tag block
+	 */
+	public function stripMeta($text);
 
 }

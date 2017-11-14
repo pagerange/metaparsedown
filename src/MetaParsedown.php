@@ -61,13 +61,23 @@ class MetaParsedown implements Parsers\ParserInterface
 	}
 
 	/**
-	 * Rturns HTML from markdown
+	 * Returns HTML from markdown
 	 * @param String $text markdown text
 	 * @return String HTML
 	 */
 	public function text($text)
 	{
 		return $this->parser->text($text);
+	}
+
+	/**
+	 * Returns markdown without meta tag block
+	 * @param  String $text markdown including meta tag block
+	 * @return String Markdown without meta tag block
+	 */
+	public function stripMeta($text)
+	{
+		return $this->parser->stripMeta($text);
 	}
 
 }

@@ -5,7 +5,7 @@
 * YAML metadata in markdown
 * @author Steve George <steve@pagerange.com>
 * @created 2017-10-29
-* @updated 2017-10-29
+* @updated 2017-11-15
 * @license MIT
 */
 
@@ -30,7 +30,7 @@ class FrontmatterParser extends \Parsedown implements ParserInterface
 	 */
 	public function text($text)
 	{
-		$markdown = preg_replace($this->regex, '', $text);
+		$markdown = $this->stripMeta($text);
 		return parent::text($markdown);
 	}
 
@@ -47,6 +47,16 @@ class FrontmatterParser extends \Parsedown implements ParserInterface
 			return Yaml::parse(trim($matches[2]));
 		}
 		return array();
+	}
+
+	/**
+	 * Returns markdown without meta tag block
+	 * @param  String $text markdown including meta tag block
+	 * @return String Markdown without meta tag block
+	 */
+	public function stripMeta($text)
+	{
+		return preg_replace($this->regex, '', $text);
 	}
 
 }
