@@ -1,10 +1,12 @@
 ## MetaParsedown
 
-MetaParsedown extends **erusev/parsedown**, a very nice markdown parser, by adding the ability to have metadata in markdown files.  I created this because we were creating a markdown document management system and needed a way to add metadata to each file.  The other option was a separate metadata file for each markdown file, which is fine, but seemed cumborsome for those creating the documents.  This way seemed easier and is pretty simple to use.
+MetaParsedown extends **erusev/parsedown**, a very nice markdown parser, by adding the ability to have metadata in markdown files in the form of valid yaml.  MetaParsedown uses the Symfony Yaml component to parse and extract the metadata.  I created this because we were creating a markdown document management system and needed a way to add metadata to each file.  The other option was a separate metadata file for each markdown file, which is fine, but seemed cumborsome for those creating the documents.  This way seemed easier and is pretty simple to use.
 
-MetaParsedown retains all the functionality of **erusev/parsedown**, but adds one method:
+MetaParsedown retains all the functionality of **erusev/parsedown**, but adds two methods:
 
 * **meta($markdown)** -- returns an array of the key/value metadata tags in the markdown
+
+* **stripMeta($markdown)** returns bare markdown with yaml frontmatter stripped out
 
 Parsedown's original **text($markdown)** method continues to return HTML, without the metadata tags
 
@@ -14,34 +16,16 @@ Include `erusev/parsedown` original class `Parsedown.php`, and `MetaParsedown` o
 
 ### Adding meta data
 
-Add metadata in one of two ways.  
+Add metadata as valid yaml key/value pairs, delimited by three dashes at the start and end.  This yaml block must appear at the start of the document.  
 
-One, in what I'm calling a `docmeta` block (a simple HTML comment), anywhere in the file (once), with the meta tags in ini format.  I prefer this myself, because the markdown is valid regardless of the markdown parser used.
-
-```html
-   
-<!--docmeta
-title = My Great Document
-author = Yours Truly
-date = 2017-10-29
--->
-# My Great Document
-
-This is the rest of the markdown document
-
-* bullet list item
-* bullet list item
-
-```
-
-Two, in standard `frontmatter` format, in valid YAML, with `---` before and after.  Basically the same as Jekyl.  This is parsed by the Symfony Yaml component.  The frontmatter must appear at the head of the document.  
-
-```yaml
+```markdown
     
 ---
-title: My Great Document
-author: Yours Truly
-date: 2017-10-29
+title: 'My Great Document'
+author: 'Yours Truly'
+description: 'A short document with very little to say'
+status: 'public'
+created_at: '2017-11-18 12:01:00'
 ---
 # My Great Document
 
@@ -56,21 +40,17 @@ This is the rest of the markdown document
 
 ``` php
 
-$mp = new MetaParsedown(); // defaults to docmeta format
-
-$mp = new MetaParsedown('frontmatter'); // yaml frontmatter
-
-$mp = new MetaParsedown('docmeta'); // docmeta format
-
-
+$mp = new MetaParsedown(); 
 
 echo $mp->text($markdown); // prints HTML, without meta data
 
-$meta = $mp->meta($markdown); // returns an array of docmeta key/value pairs
+$meta = $mp->meta($markdown); // returns an array of key/value pairs
+
+$bare_markdown = $mp->stripMeta($markdown); // returns markdown without yaml block
   
 ```
 
-Please see the [`erusev/parsedown` git page](https://github.com/erusev/parsedown) for more information and detailed documentation on how to use it and how it works.
+See the [`erusev/parsedown` git page](https://github.com/erusev/parsedown) for more information and detailed documentation on how to use it and how it works.
 
 ### License
 
