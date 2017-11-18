@@ -3,8 +3,7 @@
 	<testsuites>
 		<testsuite name="metaparsedown">
 			<file>tests/MetaParsedownTest.php</file>
-			<file>tests/DocmetaParsedownTest.php</file>
-			<file>tests/FrontmatterParsedownTest.php</file>
+			<file>tests/YamlParserTest.php</file>
 		</testsuite>
 	</testsuites>
 </phpunit>

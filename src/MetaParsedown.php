@@ -25,8 +25,7 @@ class MetaParsedown implements Parsers\ParserInterface
 	 * @var Array valid parser classes
 	 */
 	private $parsers = array(
-		'docmeta' => 'DocmetaParser',
-		'frontmatter' => 'FrontmatterParser'
+		'yaml' => 'YamlParser',
 	);
 
 	/**
@@ -40,7 +39,7 @@ class MetaParsedown implements Parsers\ParserInterface
 	 * @param String $type type of parser
 	 * @return void
 	 */
-	public function __construct($type = 'docmeta') 
+	public function __construct($type = 'yaml') 
 	{
 		if(array_key_exists($type, $this->parsers)) {
 			$class = '\\Pagerange\\Markdown\\Parsers\\' . $this->parsers[$type];

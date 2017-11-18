@@ -8,45 +8,46 @@ class TestMetaParsedown extends PHPUnit\Framework\TestCase
 {
 
 	// MetaParsedown instances
-	private $dm; // docmeta parser
-	private $fm; // frontmatter parser
+	private $mp; // markdown parser
 
 	public function setup()
 	{
-		$this->dm = new MetaParsedown('docmeta');
-		$this->fm = new MetaParsedown('frontmatter');
+		$this->mp = new MetaParsedown('yaml');
 	}
 
-	public function testCanExtractDocmetaDataArray()
+
+	public function testCanExtractYamlDataArray()
 	{
-		$file = file_get_contents(FIXTURES . '/good_docmeta.md');
-		$meta = $this->dm->meta($file);
+		$text = file_get_contents(FIXTURES . '/good_frontmatter.md');
+		$meta = $this->mp->meta($text);
 		$this->assertTrue(is_array($meta));
 	}
 
-	public function testCanExtractFrontmatterDataArray()
+	public function testYamlTextReturnsHtmlString()
 	{
-		$file = file_get_contents(FIXTURES . '/good_frontmatter.md');
-		$meta = $this->fm->meta($file);
-		$this->assertTrue(is_array($meta));
-	}
-
-	public function testDocmetaTextReturnsHtmlString()
-	{
-		$file = file_get_contents(FIXTURES . '/good_docmeta.md');
-		$html = $this->dm->text($file);
+		$text = file_get_contents(FIXTURES . '/good_frontmatter.md');
+		$html = $this->mp->text($text);
 		$regex = "/(\<h1\>This is markdown\<\/h1\>)/";
 		preg_match($regex, $html, $matches);
 		$this->assertEquals('<h1>This is markdown</h1>', $matches[1]);
 	}
 
-	public function testFrontmatterTextReturnsHtmlString()
+	public function testYamlStripMetaReturnsBareMarkdown()
 	{
-		$file = file_get_contents(FIXTURES . '/good_frontmatter.md');
-		$html = $this->fm->text($file);
-		$regex = "/(\<h1\>This is markdown\<\/h1\>)/";
-		preg_match($regex, $html, $matches);
-		$this->assertEquals('<h1>This is markdown</h1>', $matches[1]);
+		$text = file_get_contents(FIXTURES . '/good_frontmatter.md');
+		$markdown = $this->mp->stripMeta($text);
+		$pos = strpos('# This is markdown', $markdown);
+		$this->assertEquals($pos, 0);
+
+	}
+
+	public function testYamlStripMetaWhenNoMetaExistsReturnsBareMarkdown()
+	{
+		$text = file_get_contents(FIXTURES . '/no_meta.md');
+		$markdown = $this->mp->stripMeta($text);
+		$pos = strpos('# This is markdown', $markdown);
+		$this->assertEquals($pos, 0);
+
 	}
 
 	/**

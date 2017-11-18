@@ -1,8 +1,8 @@
 <?php
 
-use Pagerange\Markdown\Parsers\FrontmatterParser;
+use Pagerange\Markdown\Parsers\YamlParser;
 
-class FrontmatterParserTest extends PHPUnit\Framework\TestCase
+class YamlParserTest extends PHPUnit\Framework\TestCase
 {
 
 	// MetaParsedown instance
@@ -10,7 +10,7 @@ class FrontmatterParserTest extends PHPUnit\Framework\TestCase
 
 	public function setup()
 	{
-		$this->mp = new FrontmatterParser;
+		$this->mp = new YamlParser;
 	}
 
 	public function testCanExtractFrontmatterDataArray()
@@ -39,6 +39,24 @@ class FrontmatterParserTest extends PHPUnit\Framework\TestCase
 		$file = file_get_contents(FIXTURES . '/broken_frontmatter.md');
 		$meta = $this->mp->meta($file);
 		$this->assertEmpty($meta);
+	}
+
+	public function testYamlStripMetaReturnsBareMarkdown()
+	{
+		$text = file_get_contents(FIXTURES . '/good_frontmatter.md');
+		$markdown = $this->mp->stripMeta($text);
+		$pos = strpos('# This is markdown', $markdown);
+		$this->assertEquals($pos, 0);
+
+	}
+
+	public function testYamlStripMetaWhenNoMetaExistsReturnsBareMarkdown()
+	{
+		$text = file_get_contents(FIXTURES . '/no_meta.md');
+		$markdown = $this->mp->stripMeta($text);
+		$pos = strpos('# This is markdown', $markdown);
+		$this->assertEquals($pos, 0);
+
 	}
 
 	/**
