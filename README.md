@@ -12,7 +12,13 @@ Parsedown's original **text($markdown)** method continues to return HTML, withou
 
 ### Installation
 
-Include `erusev/parsedown` original class `Parsedown.php`, and `MetaParsedown` or install [the composer package](https://packagist.org/packages/pagerange/metaparsedown).
+Please use [the composer package](https://packagist.org/packages/pagerange/metaparsedown) to include Metaparsedown in your project.
+
+```bash
+
+composer require pagerange/metaparsedown
+
+```
 
 ### Adding meta data
 
