@@ -46,6 +46,8 @@ This is the rest of the markdown document
 
 ``` php
 
+use Pagerange\Markdown\MetaParsedown;
+
 $mp = new MetaParsedown(); 
 
 echo $mp->text($markdown); // prints HTML, without meta data
