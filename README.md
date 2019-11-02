@@ -1,6 +1,6 @@
 ## MetaParsedown
 
-MetaParsedown extends **erusev/parsedown**, a very nice markdown parser, by adding the ability to have metadata in markdown files in the form of valid yaml.  MetaParsedown uses the Symfony Yaml component to parse and extract the metadata.  I created this because we were creating a markdown document management system and needed a way to add metadata to each file.  The other option was a separate metadata file for each markdown file, which is fine, but seemed cumborsome for those creating the documents.  This way seemed easier and is pretty simple to use.
+MetaParsedown extends **erusev/parsedown** and **eruseve/parsedown-extra**, very nice markdown parsers, by adding the ability to have metadata in markdown or markdown-extra files in the form of valid yaml.  MetaParsedown uses the Symfony Yaml component to parse and extract the metadata.  I created this because we were creating a markdown document management system and needed a way to add metadata to each file.  The other option was a separate metadata file for each markdown file, which is fine, but seemed cumborsome for those creating the documents.  This way seemed easier and is pretty simple to use.
 
 MetaParsedown retains all the functionality of **erusev/parsedown**, but adds two methods:
 
@@ -9,6 +9,8 @@ MetaParsedown retains all the functionality of **erusev/parsedown**, but adds tw
 * **stripMeta($markdown)** returns bare markdown with yaml frontmatter stripped out
 
 Parsedown's original **text($markdown)** method continues to return HTML, without the metadata tags
+
+MetaParsedown is also available as a [Wordpress plugin](https://github.com/pagerange/metaparsedown-wordpress).
 
 ### Installation
 
@@ -58,7 +60,7 @@ $bare_markdown = $mp->stripMeta($markdown); // returns markdown without yaml blo
   
 ```
 
-See the [`erusev/parsedown` git page](https://github.com/erusev/parsedown) for more information and detailed documentation on how to use it and how it works.
+See the [`erusev/parsedown` git page](https://github.com/erusev/parsedown) or the [`erusev/parsedown-extra` git page](https://github.com/erusev/parsedown-extra)for more information and detailed documentation on how to use it and how it works.
 
 ### License
 
