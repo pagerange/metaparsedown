@@ -13,7 +13,7 @@ namespace Pagerange\Markdown\Parsers;
 
 use \Symfony\Component\Yaml\Yaml;
 
-class YamlParser extends \Parsedown implements ParserInterface
+class YamlParser extends \ParsedownExtra implements ParserInterface
 {
 
 	/**
