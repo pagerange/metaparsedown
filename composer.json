@@ -1,7 +1,7 @@
 {
     "name": "pagerange/metaparsedown",
     "description": "Adds ability to have meta data in markdown files parsed by eursev/parsedown or eruseve/parsedown-extra",
-    "keywords": ["pagerange", "parsedown", "markdown", "meta", "docmeta"],
+    "keywords": ["pagerange", "parsedown", "parsedown-extra", "markdown", "markdown-extra", "meta", "yaml"],
     "type": "library",
     "require": {
         "erusev/parsedown": "^1.7.2",
