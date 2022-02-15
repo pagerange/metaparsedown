@@ -10,7 +10,7 @@ class TestMetaParsedown extends PHPUnit\Framework\TestCase
 	// MetaParsedown instances
 	private $mp; // markdown parser
 
-	public function setup()
+	public function setup() :void
 	{
 		$this->mp = new MetaParsedown('yaml');
 	}
@@ -50,11 +50,9 @@ class TestMetaParsedown extends PHPUnit\Framework\TestCase
 
 	}
 
-	/**
-	 * @expectedException Pagerange\Markdown\ParserNotFoundException
-	 */
 	public function testThrowsParserNotFoundExceptionOnUnknownParserType()
 	{
+		$this->expectException(Pagerange\Markdown\ParserNotFoundException::class);
 		new MetaParsedown('asdfasf');
 	}
 

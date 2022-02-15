@@ -8,7 +8,7 @@ class YamlParserTest extends PHPUnit\Framework\TestCase
 	// MetaParsedown instance
 	private $mp;
 
-	public function setup()
+	public function setup() :void
 	{
 		$this->mp = new YamlParser;
 	}
@@ -59,11 +59,9 @@ class YamlParserTest extends PHPUnit\Framework\TestCase
 
 	}
 
-	/**
-	 * @expectedException Symfony\Component\Yaml\Exception\ParseException
-	 */
 	public function testMetaThrowsParseExceptionOnBadFrontmatterFormat()
 	{
+		$this->expectException(Symfony\Component\Yaml\Exception\ParseException::class);
 		$file = file_get_contents(FIXTURES . '/bad_frontmatter.md');
 		$meta = $this->mp->meta($file);
 	}
