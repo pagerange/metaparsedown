@@ -5,7 +5,7 @@
     "type": "library",
     "require": {
         "php": "^8",
-        "erusev/parsedown": "dev-master",
+        "erusev/parsedown": "v2.0.0-beta-1",
         "symfony/yaml": "^7.2.0"
     },
     "require-dev": {
